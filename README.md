@@ -7,13 +7,13 @@ Record your microphone audio input and get an ```audio/mp3``` file in the end.
 ## Yarn
 
 ```bash
-yarn add mic-recorder-to-mp3
+yarn add github:udayodedara/mic-recorder-to-mp3
 ```
 
 ## npm
 
 ```bash
-npm install mic-recorder-to-mp3
+npm install github:udayodedara/mic-recorder-to-mp3
 ```
 
 ## CDN Usage
