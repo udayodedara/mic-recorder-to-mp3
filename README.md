@@ -46,6 +46,13 @@ const recorder = new MicRecorder({
   bitRate: 128
 });
 
+// if you are already using stream from navigator then you can directly add stream to recorder which can save 200ms of time.
+recorder.startWithStream(stream).then(() => {
+  // something else
+}).catch((e) => {
+  console.error(e);
+});
+
 // Start recording. Browser will request permission to use your microphone.
 recorder.start().then(() => {
   // something else
