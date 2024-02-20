@@ -7,13 +7,13 @@ Record your microphone audio input and get an ```audio/mp3``` file in the end.
 ## Yarn
 
 ```bash
-yarn add mic-recorder-to-mp3
+yarn add github:udayodedara/mic-recorder-to-mp3
 ```
 
 ## npm
 
 ```bash
-npm install mic-recorder-to-mp3
+npm install github:udayodedara/mic-recorder-to-mp3
 ```
 
 ## CDN Usage
@@ -44,6 +44,13 @@ const MicRecorder = require('mic-recorder-to-mp3');
 // New instance
 const recorder = new MicRecorder({
   bitRate: 128
+});
+
+// if you are already using stream from navigator then you can directly add stream to recorder which can save 200ms of time.
+recorder.startWithStream(stream).then(() => {
+  // something else
+}).catch((e) => {
+  console.error(e);
 });
 
 // Start recording. Browser will request permission to use your microphone.
