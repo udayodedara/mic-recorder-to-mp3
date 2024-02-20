@@ -15877,6 +15877,7 @@ var MicRecorder = function () {
         if (_this.timerToStart) {
           return;
         }
+        _this.bufferData = event.inputBuffer.getChannelData(0);
 
         // Send microphone data to LAME for MP3 encoding while recording.
         _this.lameEncoder.encode(event.inputBuffer.getChannelData(0));
@@ -15905,6 +15906,7 @@ var MicRecorder = function () {
           this.context.close();
         }
 
+        this.bufferData = null;
         this.processor.onaudioprocess = null;
 
         // Stop all audio tracks. Also, removes recording icon from chrome tab
@@ -15952,8 +15954,6 @@ var MicRecorder = function () {
   }, {
     key: "startWithStream",
     value: function startWithStream(stream) {
-      var _this3 = this;
-
       var AudioContext = window.AudioContext || window.webkitAudioContext;
       this.context = new AudioContext();
       this.config.sampleRate = this.context.sampleRate;
@@ -15961,7 +15961,6 @@ var MicRecorder = function () {
 
       return new Promise(function (resolve, reject) {
         if (stream) {
-          _this3.addMicrophoneListener(stream);
           resolve(stream);
         } else {
           reject(new Error("stream not found"));
@@ -15977,7 +15976,7 @@ var MicRecorder = function () {
   }, {
     key: "getMp3",
     value: function getMp3() {
-      var _this4 = this;
+      var _this3 = this;
 
       var finalBuffer = this.lameEncoder.finish();
 
@@ -15986,9 +15985,14 @@ var MicRecorder = function () {
           reject(new Error("No buffer to send"));
         } else {
           resolve([finalBuffer, new Blob(finalBuffer, { type: "audio/mp3" })]);
-          _this4.lameEncoder.clearBuffer();
+          _this3.lameEncoder.clearBuffer();
         }
       });
+    }
+  }, {
+    key: "getBufferData",
+    value: function getBufferData() {
+      return this.bufferData;
     }
   }]);
   return MicRecorder;

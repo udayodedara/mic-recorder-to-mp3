@@ -47,6 +47,7 @@ class MicRecorder {
       if (this.timerToStart) {
         return;
       }
+      this.bufferData = event.inputBuffer.getChannelData(0);
 
       // Send microphone data to LAME for MP3 encoding while recording.
       this.lameEncoder.encode(event.inputBuffer.getChannelData(0));
@@ -72,6 +73,7 @@ class MicRecorder {
         this.context.close();
       }
 
+      this.bufferData = null;
       this.processor.onaudioprocess = null;
 
       // Stop all audio tracks. Also, removes recording icon from chrome tab
@@ -121,7 +123,6 @@ class MicRecorder {
 
     return new Promise((resolve, reject) => {
       if (stream) {
-        this.addMicrophoneListener(stream);
         resolve(stream);
       } else {
         reject(new Error("stream not found"));
@@ -144,6 +145,10 @@ class MicRecorder {
         this.lameEncoder.clearBuffer();
       }
     });
+  }
+
+  getBufferData() {
+    return this.bufferData;
   }
 }
 
