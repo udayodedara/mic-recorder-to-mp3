@@ -944,10 +944,9 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-lamejs@^1.2.1:
+"lamejs@github:zhuker/lamejs":
   version "1.2.1"
-  resolved "https://registry.npmjs.org/lamejs/-/lamejs-1.2.1.tgz"
-  integrity sha512-s7bxvjvYthw6oPLCm5pFxvA84wUROODB8jEO2+CE1adhKgrIvVOlmMgY8zyugxGrvRaDHNJanOiS21/emty6dQ==
+  resolved "git+ssh://git@github.com/zhuker/lamejs.git#582bbba6a12f981b984d8fb9e1874499fed85675"
   dependencies:
     use-strict "1.0.1"
 

@@ -1356,6 +1356,24 @@ function III_psy_ratio() {
 
 var III_psy_ratio_1 = III_psy_ratio;
 
+//package mp3;
+
+/* MPEG modes */
+function MPEGMode(ordinal) {
+    var _ordinal = ordinal;
+    this.ordinal = function () {
+        return _ordinal;
+    };
+}
+
+MPEGMode.STEREO = new MPEGMode(0);
+MPEGMode.JOINT_STEREO = new MPEGMode(1);
+MPEGMode.DUAL_CHANNEL = new MPEGMode(2);
+MPEGMode.MONO = new MPEGMode(3);
+MPEGMode.NOT_SET = new MPEGMode(4);
+
+var MPEGMode_1 = MPEGMode;
+
 var System$5 = common.System;
 var VbrMode$5 = common.VbrMode;
 var new_array_n$5 = common.new_array_n;
@@ -1459,6 +1477,7 @@ Encoder$2.fircoef = [-0.0207887 * 5, -0.0378413 * 5,
 function Encoder$2() {
     var NewMDCT = NewMDCT_1;
     var III_psy_ratio = III_psy_ratio_1;
+    var MPEGMode = MPEGMode_1;
 
     var FFTOFFSET = Encoder$2.FFTOFFSET;
     var MPG_MD_MS_LR = Encoder$2.MPG_MD_MS_LR;
@@ -2256,7 +2275,7 @@ var assert$3 = common.assert;
 
 
 function PsyModel() {
-
+    var MPEGMode = MPEGMode_1;
     var fft = new FFT_1();
 
     var LOG10 = 2.30258509299404568402;
@@ -4994,24 +5013,6 @@ function PsyModel() {
 
 var PsyModel_1 = PsyModel;
 
-//package mp3;
-
-/* MPEG modes */
-function MPEGMode$1(ordinal) {
-    var _ordinal = ordinal;
-    this.ordinal = function () {
-        return _ordinal;
-    };
-}
-
-MPEGMode$1.STEREO = new MPEGMode$1(0);
-MPEGMode$1.JOINT_STEREO = new MPEGMode$1(1);
-MPEGMode$1.DUAL_CHANNEL = new MPEGMode$1(2);
-MPEGMode$1.MONO = new MPEGMode$1(3);
-MPEGMode$1.NOT_SET = new MPEGMode$1(4);
-
-var MPEGMode_1 = MPEGMode$1;
-
 function LameGlobalFlags() {
 
     this.class_id = 0;
@@ -7137,7 +7138,7 @@ QuantizePVT.LARGE_BITS = 100000;
 QuantizePVT.IXMAX_VAL = 8206;
 
 function QuantizePVT() {
-
+    var BitStream = BitStream_1;
     var tak = null;
     var rv = null;
     var psy = null;
@@ -9279,6 +9280,7 @@ BitStream$1.NEQ = function (a, b) {
 };
 
 function BitStream$1() {
+    var Lame = Lame_1;
     var self = this;
     var CRC16_POLYNOMIAL = 0x8005;
 
@@ -10293,6 +10295,7 @@ var assert$2 = common.assert;
 
 
 function Lame$1() {
+    var MPEGMode = MPEGMode_1;
     var self = this;
     var LAME_MAXALBUMART = (128 * 1024);
 
@@ -12137,6 +12140,7 @@ var Lame_1 = Lame$1;
 
 var VbrMode$20 = common.VbrMode;
 function Presets() {
+    var Lame = Lame_1;
     function VBRPresets(qual, comp, compS,
                         y, shThreshold, shThresholdS,
                         adj, adjShort, lower,

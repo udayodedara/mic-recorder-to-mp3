@@ -38,10 +38,10 @@
       "external-helpers"
     ]
   },
-  "dependencies": {
-    "lamejs": "^1.2.1"
-  },
   "peerDependencies": {
     "webrtc-adapter": ">=4.1.1"
+  },
+  "dependencies": {
+    "lamejs": "github:zhuker/lamejs"
   }
 }
