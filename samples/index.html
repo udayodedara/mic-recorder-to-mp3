@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
+
 <body>
   <div class="container text-center">
     <h1>Mic Recorder to Mp3 Example</h1>
@@ -32,15 +34,24 @@
 
     button.addEventListener('click', startRecording);
 
+    function listener(data) {
+      console.log('data', data);
+    }
+
     function startRecording() {
-      recorder.start().then(() => {
-        button.textContent = 'Stop recording';
-        button.classList.toggle('btn-danger');
-        button.removeEventListener('click', startRecording);
-        button.addEventListener('click', stopRecording);
-      }).catch((e) => {
-        console.error(e);
-      });
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          recorder.startWithStream(stream, listener)
+          button.textContent = 'Stop recording';
+          button.classList.toggle('btn-danger');
+          button.removeEventListener('click', startRecording);
+          button.addEventListener('click', stopRecording);
+
+        })
+        .catch((e) => {
+          console.error(e);
+        });
     }
 
     function stopRecording() {
@@ -67,4 +78,5 @@
     }
   </script>
 </body>
+
 </html>

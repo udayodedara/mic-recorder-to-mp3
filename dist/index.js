@@ -15851,6 +15851,7 @@ var MicRecorder = function () {
   /**
    * Starts to listen for the microphone sound
    * @param {MediaStream} stream
+   * @param {() => {}} function
    */
 
 
@@ -15858,6 +15859,8 @@ var MicRecorder = function () {
     key: "addMicrophoneListener",
     value: function addMicrophoneListener(stream) {
       var _this = this;
+
+      var listener = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 
       this.activeStream = stream;
 
@@ -15877,7 +15880,7 @@ var MicRecorder = function () {
         if (_this.timerToStart) {
           return;
         }
-        _this.bufferData = event.inputBuffer.getChannelData(0);
+        listener(event.inputBuffer.getChannelData(0));
 
         // Send microphone data to LAME for MP3 encoding while recording.
         _this.lameEncoder.encode(event.inputBuffer.getChannelData(0));
@@ -15906,7 +15909,6 @@ var MicRecorder = function () {
           this.context.close();
         }
 
-        this.bufferData = null;
         this.processor.onaudioprocess = null;
 
         // Stop all audio tracks. Also, removes recording icon from chrome tab
@@ -15948,24 +15950,20 @@ var MicRecorder = function () {
     /**
      * Start recording with available stream from microphone
      * @param {mediaSteam} stream
-     * @return Promise
+     * @param {() => {}} listener
      */
 
   }, {
     key: "startWithStream",
     value: function startWithStream(stream) {
+      var listener = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
       var AudioContext = window.AudioContext || window.webkitAudioContext;
       this.context = new AudioContext();
       this.config.sampleRate = this.context.sampleRate;
       this.lameEncoder = new Encoder(this.config);
 
-      return new Promise(function (resolve, reject) {
-        if (stream) {
-          resolve(stream);
-        } else {
-          reject(new Error("stream not found"));
-        }
-      });
+      this.addMicrophoneListener(stream, listener);
     }
 
     /**
@@ -15988,11 +15986,6 @@ var MicRecorder = function () {
           _this3.lameEncoder.clearBuffer();
         }
       });
-    }
-  }, {
-    key: "getBufferData",
-    value: function getBufferData() {
-      return this.bufferData;
     }
   }]);
   return MicRecorder;

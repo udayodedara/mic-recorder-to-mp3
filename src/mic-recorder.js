@@ -27,8 +27,9 @@ class MicRecorder {
   /**
    * Starts to listen for the microphone sound
    * @param {MediaStream} stream
+   * @param {() => {}} function
    */
-  addMicrophoneListener(stream) {
+  addMicrophoneListener(stream, listener = () => {}) {
     this.activeStream = stream;
 
     // This prevents the weird noise once you start listening to the microphone
@@ -47,7 +48,7 @@ class MicRecorder {
       if (this.timerToStart) {
         return;
       }
-      this.bufferData = event.inputBuffer.getChannelData(0);
+      listener(event.inputBuffer.getChannelData(0));
 
       // Send microphone data to LAME for MP3 encoding while recording.
       this.lameEncoder.encode(event.inputBuffer.getChannelData(0));
@@ -73,7 +74,6 @@ class MicRecorder {
         this.context.close();
       }
 
-      this.bufferData = null;
       this.processor.onaudioprocess = null;
 
       // Stop all audio tracks. Also, removes recording icon from chrome tab
@@ -113,21 +113,15 @@ class MicRecorder {
   /**
    * Start recording with available stream from microphone
    * @param {mediaSteam} stream
-   * @return Promise
+   * @param {() => {}} listener
    */
-  startWithStream(stream) {
+  startWithStream(stream, listener = () => {}) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     this.context = new AudioContext();
     this.config.sampleRate = this.context.sampleRate;
     this.lameEncoder = new Encoder(this.config);
 
-    return new Promise((resolve, reject) => {
-      if (stream) {
-        resolve(stream);
-      } else {
-        reject(new Error("stream not found"));
-      }
-    });
+    this.addMicrophoneListener(stream, listener);
   }
 
   /**
@@ -145,10 +139,6 @@ class MicRecorder {
         this.lameEncoder.clearBuffer();
       }
     });
-  }
-
-  getBufferData() {
-    return this.bufferData;
   }
 }
 
